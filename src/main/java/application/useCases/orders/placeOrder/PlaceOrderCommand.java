@@ -3,7 +3,7 @@ package application.useCases.orders.placeOrder;
 import domain.customers.entities.Customer;
 import domain.orders.entities.Order;
 import domain.shared.abstractions.Command;
-import domain.stores.abstractions.entities.Store;
+import domain.stores.entities.Store;
 
 public class PlaceOrderCommand extends Command {
     private Order order;

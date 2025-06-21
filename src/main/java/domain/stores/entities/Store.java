@@ -1,4 +1,4 @@
-package domain.stores.abstractions.entities;
+package domain.stores.entities;
 
 import domain.shared.abstractions.UserRoleType;
 import domain.shared.entities.User;
@@ -18,6 +18,14 @@ public class Store extends User {
     public Store(String name, StoreType storeType) {
         super(UUID.randomUUID(), name, UserRoleType.STORE);
 
+        this.storeType = storeType;
+    }
+
+    public StoreType getStoreType() {
+        return storeType;
+    }
+
+    public void setStoreType(StoreType storeType) {
         this.storeType = storeType;
     }
 }

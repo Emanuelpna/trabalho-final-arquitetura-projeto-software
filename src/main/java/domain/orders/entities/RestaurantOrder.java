@@ -1,12 +1,8 @@
 package domain.orders.entities;
 
-import domain.customers.entities.Customer;
 import domain.orders.valueObjects.Address;
 import domain.orders.states.OrderState;
-import domain.shared.abstractions.Notification;
-import domain.shared.notifications.OrderPendingApprovalNotification;
 import domain.stores.abstractions.StoreType;
-import domain.stores.abstractions.entities.Store;
 
 import java.util.List;
 import java.util.UUID;

@@ -7,7 +7,7 @@ import domain.orders.states.OrderState;
 import domain.shared.abstractions.Notification;
 import domain.shared.entities.Entity;
 import domain.shared.notifications.OrderPendingApprovalNotification;
-import domain.stores.abstractions.entities.Store;
+import domain.stores.entities.Store;
 
 import java.util.List;
 import java.util.UUID;
