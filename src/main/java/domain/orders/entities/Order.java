@@ -2,6 +2,7 @@ package domain.orders.entities;
 
 import domain.customers.entities.Customer;
 import domain.delivery.entities.Deliverer;
+import domain.orders.states.PendingOrderState;
 import domain.orders.valueObjects.Address;
 import domain.orders.states.OrderState;
 import domain.shared.abstractions.Notification;
@@ -73,21 +74,24 @@ public abstract class Order extends Entity {
     public abstract void processOrder();
 
     public List<Notification> placeOrder(Customer customer, Store store) {
+        if (!this.getOrderState().equals(PendingOrderState.getInstance()) || store != null && customer != null) {
+            throw new IllegalStateException("Order already placed");
+        }
+
+        this.setOrderState(PendingOrderState.getInstance());
+
         this.setStore(store);
         this.setCustomer(customer);
 
         return List.of(new Notification(OrderPendingApprovalNotification.getNotification()));
     }
 
-    public List<Notification> startOrderPreparation(Customer customer, Store store) {
+    public List<Notification> startOrderPreparation() {
         boolean successfulStateChange = this.getOrderState().startOrderPreparation(this);
 
         if (!successfulStateChange) {
             throw new IllegalStateException("Order preparation failed");
         }
-
-        this.setStore(store);
-        this.setCustomer(customer);
 
         return List.of(new Notification(OrderPendingApprovalNotification.getNotification()));
     }
