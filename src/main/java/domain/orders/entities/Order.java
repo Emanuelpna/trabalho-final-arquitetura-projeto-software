@@ -7,7 +7,7 @@ import domain.orders.valueObjects.Address;
 import domain.orders.states.OrderState;
 import domain.shared.abstractions.Notification;
 import domain.shared.entities.Entity;
-import domain.shared.notifications.OrderPendingApprovalNotification;
+import domain.shared.notifications.*;
 import domain.stores.entities.Store;
 
 import java.util.List;
@@ -97,7 +97,10 @@ public abstract class Order extends Entity {
             throw new IllegalStateException("Order preparation failed");
         }
 
-        return List.of(new Notification(OrderPendingApprovalNotification.getNotification()));
+        return List.of(
+                new Notification(OrderApprovedByStoreNotification.getNotification()),
+                new Notification(OrderIsWaitingForPickupOnStoreNotification.getNotification())
+        );
     }
 
     public List<Notification> deliver(Deliverer deliverer) {
@@ -109,7 +112,7 @@ public abstract class Order extends Entity {
 
         this.setDeliverer(deliverer);
 
-        return List.of();
+        return List.of(new Notification(OrderIsInTransitToCustomerNotification.getNotification()));
     }
 
     public List<Notification> markAsArrived() {
@@ -119,7 +122,7 @@ public abstract class Order extends Entity {
             throw new IllegalStateException("Order cannot be marked as arrived");
         }
 
-        return List.of();
+        return List.of(new Notification(OrderHasArrivedOnCustomerAddressNotification.getNotification()));
     }
 
     public List<Notification> markAsReceived() {
@@ -129,7 +132,7 @@ public abstract class Order extends Entity {
             throw new IllegalStateException("Order cannot be marked as received");
         }
 
-        return List.of();
+        return List.of(new Notification(CustomerReceivedTheDeliveryWithSuccessNotification.getNotification()));
     }
 
     public List<Notification> reject() {
@@ -139,7 +142,7 @@ public abstract class Order extends Entity {
             throw new IllegalStateException("Order cannot be rejected");
         }
 
-        return List.of();
+        return List.of(new Notification(OrderHasBeenRejectedByCustomerNotification.getNotification()));
     }
 
     public List<Notification> markAsNotAnswered() {
@@ -149,7 +152,7 @@ public abstract class Order extends Entity {
             throw new IllegalStateException("Order cannot be marked as not-answered");
         }
 
-        return List.of();
+        return List.of(new Notification(CustomerDidntAnswerTheDelivererNotification.getNotification()));
     }
 
     public List<Notification> cancel() {
@@ -159,6 +162,6 @@ public abstract class Order extends Entity {
             throw new IllegalStateException("Order cannot be cancelled");
         }
 
-        return List.of();
+        return List.of(new Notification(OrderCancelledByCustomerNotification.getNotification()));
     }
 }
