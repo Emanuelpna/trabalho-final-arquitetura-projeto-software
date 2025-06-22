@@ -46,12 +46,15 @@ class OrderStateTest {
     //region PlacingOrder
     @Test
     void placeNewRestaurantOrder() {
+        order.placeOrder(customer, store);
+
         assertEquals("Pending", order.getOrderState().getStateName());
     }
 
     @Test
     void placeAlreadyPendingRestaurantOrder() {
         try {
+            order.placeOrder(customer, store);
             order.placeOrder(customer, store);
 
             fail();
