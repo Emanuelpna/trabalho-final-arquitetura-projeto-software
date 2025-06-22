@@ -36,10 +36,12 @@ public class NotificationSender {
         this.notificationsToBeSent.add(new NotificationToBeSent(notificationToBeSent, users));
     }
 
-
     public void dispatchNotifications() {
         for (NotificationToBeSent notification : notificationsToBeSent) {
-            userRole.notify(notification.getUsers(), notification.getNotification());
+            if (!notification.isSent()) {
+                userRole.notify(notification.getUsers(), notification.getNotification());
+                notification.setSent(true);
+            }
         }
     }
 }

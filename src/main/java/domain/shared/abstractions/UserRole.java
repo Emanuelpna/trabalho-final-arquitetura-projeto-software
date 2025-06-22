@@ -31,7 +31,7 @@ public abstract class UserRole {
 
     private void addUserObservers(List<User> users, Notification notification) {
         for (User user : users) {
-            if (user.getUserRole().equals(this.userRoleType)) {
+            if (user != null && user.getUserRole().equals(this.userRoleType)) {
                 // remove first so same user will not receive a notification repeated
                 notification.deleteObserver(user);
                 notification.addObserver(user);
@@ -48,12 +48,10 @@ public abstract class UserRole {
             return this.getRole();
         }
 
-
-        if (superiorUserRole != null) {
-            return superiorUserRole.notify(users, notification);
-        } else {
-            return "Notifiable User Role not found";
+        if (superiorUserRole == null) {
+            throw new IllegalStateException("Notifiable User Role not found");
         }
 
+        return superiorUserRole.notify(users, notification);
     }
 }
