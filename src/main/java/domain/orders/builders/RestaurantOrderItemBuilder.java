@@ -22,6 +22,10 @@ public class RestaurantOrderItemBuilder implements OrderItemBuilder {
 
     @Override
     public OrderBuilder build() {
+        if(product == null || quantity == 0) {
+            throw new IllegalStateException("Product and quantity are required");
+        }
+
         OrderItem orderItem = new OrderItem(this.product, this.quantity);
 
         for (Addition addition : this.selectedAdditions) {

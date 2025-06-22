@@ -46,6 +46,10 @@ public abstract class Order extends Entity {
         return state;
     }
 
+    public Address getShippingAddress() {
+        return shippingAddress;
+    }
+
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
@@ -74,7 +78,7 @@ public abstract class Order extends Entity {
     public abstract void processOrder();
 
     public List<Notification> placeOrder(Customer customer, Store store) {
-        if (!this.getOrderState().equals(PendingOrderState.getInstance()) || store != null && customer != null) {
+        if (!this.getOrderState().equals(PendingOrderState.getInstance()) || this.store != null && this.customer != null) {
             throw new IllegalStateException("Order already placed");
         }
 

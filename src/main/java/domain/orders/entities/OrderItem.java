@@ -27,6 +27,14 @@ public class OrderItem extends Entity {
         this.quantity = quantity;
     }
 
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public List<Addition> getSelectedAdditions() {
+        return selectedAdditions;
+    }
+
     public Product getProduct() {
         return product;
     }

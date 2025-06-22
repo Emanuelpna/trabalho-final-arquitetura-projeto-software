@@ -21,11 +21,11 @@ public class RestaurantOrderBuilder implements OrderBuilder {
     @Override
     public Order build() {
         if(this.shippingAddress == null) {
-            throw new RuntimeException("Shipping address not set");
+            throw new IllegalStateException("Shipping address not set");
         }
 
         if(this.orderItems.isEmpty()) {
-            throw new RuntimeException("Order items cannot be empty");
+            throw new IllegalStateException("Order items cannot be empty");
         }
 
         return new RestaurantOrder(this.shippingAddress, this.orderItems, PendingOrderState.getInstance());
