@@ -25,7 +25,6 @@ class PlaceOrderCommandHandlerTest {
 
     private Store store;
     private Customer customer;
-    private Deliverer deliverer;
 
     private OrderMediator mediator;
 
@@ -36,7 +35,6 @@ class PlaceOrderCommandHandlerTest {
 
         this.store = new Store("Hamburgueria 1", StoreType.RESTAURANT);
         this.customer = new Customer("Cliente 1");
-        this.deliverer = new Deliverer("Entregador 1");
 
         OrderBuilder restaurantOrderBuilder = OrderBuilderFactory.getOrder("RestaurantOrderBuilder");
         this.order = restaurantOrderBuilder
@@ -74,6 +72,51 @@ class PlaceOrderCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Cannot place an order already placed", e.getMessage());
+        }
+    }
+
+    @Test
+    void failToPlaceOrderWithoutOrder() {
+        try {
+            PlaceOrderCommand command = new PlaceOrderCommand(null, customer, store);
+
+            PlaceOrderCommandHandler commandHandler = new PlaceOrderCommandHandler();
+
+            commandHandler.handle(command);
+
+            fail();
+        } catch (IllegalStateException e) {
+            assertEquals("Order is required", e.getMessage());
+        }
+    }
+
+    @Test
+    void failToPlaceOrderWithoutCustomer() {
+        try {
+            PlaceOrderCommand command = new PlaceOrderCommand(order, null, store);
+
+            PlaceOrderCommandHandler commandHandler = new PlaceOrderCommandHandler();
+
+            commandHandler.handle(command);
+
+            fail();
+        } catch (IllegalStateException e) {
+            assertEquals("Customer is required", e.getMessage());
+        }
+    }
+
+    @Test
+    void failToPlaceOrderWithoutStore() {
+        try {
+            PlaceOrderCommand command = new PlaceOrderCommand(order, customer, null);
+
+            PlaceOrderCommandHandler commandHandler = new PlaceOrderCommandHandler();
+
+            commandHandler.handle(command);
+
+            fail();
+        } catch (IllegalStateException e) {
+            assertEquals("Store is required", e.getMessage());
         }
     }
 }
