@@ -45,6 +45,9 @@ public class RestaurantOrderItemBuilder implements OrderItemBuilder {
         }
 
         this.product = product;
+        this.selectedAdditions.clear();
+        this.quantity = 0;
+
         return this;
     }
 

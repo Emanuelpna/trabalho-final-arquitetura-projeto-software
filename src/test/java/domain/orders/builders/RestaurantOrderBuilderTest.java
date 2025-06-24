@@ -28,7 +28,7 @@ class RestaurantOrderBuilderTest {
     }
 
     @Test
-    void createOrderItem() {
+    void createOrder() {
         OrderBuilder restaurantOrderBuilder = OrderBuilderFactory.getOrder("RestaurantOrderBuilder");
         OrderItemBuilder restauranteOrderItemBuilder = new RestaurantOrderItemBuilder(restaurantOrderBuilder);
 
@@ -36,6 +36,26 @@ class RestaurantOrderBuilderTest {
                 .chooseProduct(xBurguer)
                 .withQuantity(1)
                 .addAddition(doubleCheese)
+                .build();
+
+        Order order = orderBuilder
+                .addShippingAddress(new Address("Rua Aquela Lá", "Juiz de Fora", "MG", "Brasil"))
+                .build();
+
+        assertEquals("Pending", order.getOrderState().getStateName());
+    }
+
+    @Test
+    void createOrderWithMultipleOrderItems() {
+        OrderBuilder restaurantOrderBuilder = OrderBuilderFactory.getOrder("RestaurantOrderBuilder");
+        OrderItemBuilder restauranteOrderItemBuilder = new RestaurantOrderItemBuilder(restaurantOrderBuilder);
+
+        OrderBuilder orderBuilder = restauranteOrderItemBuilder
+                .chooseProduct(xBurguer)
+                .withQuantity(1)
+                .addAddition(doubleCheese)
+                .chooseProduct(new Product("Porção de Batata Frita", 20.0, StoreType.RESTAURANT, List.of()))
+                .withQuantity(1)
                 .build();
 
         Order order = orderBuilder
