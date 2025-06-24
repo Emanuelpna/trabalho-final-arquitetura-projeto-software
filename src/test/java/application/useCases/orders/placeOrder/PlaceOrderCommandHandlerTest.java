@@ -26,8 +26,6 @@ class PlaceOrderCommandHandlerTest {
     private Store store;
     private Customer customer;
 
-    private OrderMediator mediator;
-
     @BeforeEach
     void setUp() {
         this.doubleCheese = new Addition("Dobro de Queijo", "O dobro de cheddar no seu lanche", 4.99);

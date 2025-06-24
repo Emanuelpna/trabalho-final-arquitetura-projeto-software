@@ -32,14 +32,14 @@ public class NotificationSender {
         return notificationsToBeSent;
     }
 
-    public void addNotification(Notification notificationToBeSent, List<User> users) {
-        this.notificationsToBeSent.add(new NotificationToBeSent(notificationToBeSent, users));
+    public void addNotification(Notification notificationToBeSent) {
+        this.notificationsToBeSent.add(new NotificationToBeSent(notificationToBeSent));
     }
 
-    public void dispatchNotifications() {
+    public void dispatchNotifications(List<User> users) {
         for (NotificationToBeSent notification : notificationsToBeSent) {
             if (!notification.isSent()) {
-                userRole.notify(notification.getUsers(), notification.getNotification());
+                userRole.notify(users, notification.getNotification());
                 notification.setSent(true);
             }
         }

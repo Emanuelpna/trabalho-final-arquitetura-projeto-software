@@ -38,6 +38,18 @@ public abstract class Order extends Entity {
         this.state = state;
     }
 
+    public Store getStore() {
+        return store;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Deliverer getDeliverer() {
+        return deliverer;
+    }
+
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }

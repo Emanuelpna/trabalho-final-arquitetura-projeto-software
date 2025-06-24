@@ -29,7 +29,6 @@ class CancelOrderCommandHandlerTest {
     private Customer customer;
     private Deliverer deliverer;
 
-    private OrderMediator mediator;
 
     @BeforeEach
     void setUp() {
@@ -56,7 +55,7 @@ class CancelOrderCommandHandlerTest {
 
     @Test
     public void cancelOrder() {
-        CancelOrderCommand command = new CancelOrderCommand(order, customer, store, deliverer);
+        CancelOrderCommand command = new CancelOrderCommand(order);
 
         CancelOrderCommandHandler handler = new CancelOrderCommandHandler();
 
@@ -70,7 +69,7 @@ class CancelOrderCommandHandlerTest {
         try {
             order.cancel();
 
-            CancelOrderCommand command = new CancelOrderCommand(order, customer, store, deliverer);
+            CancelOrderCommand command = new CancelOrderCommand(order);
 
             CancelOrderCommandHandler commandHandler = new CancelOrderCommandHandler();
 
@@ -85,7 +84,7 @@ class CancelOrderCommandHandlerTest {
     @Test
     void failToCancelOrderWithoutOrder() {
         try {
-            CancelOrderCommand command = new CancelOrderCommand(null, customer, store, deliverer);
+            CancelOrderCommand command = new CancelOrderCommand(null);
 
             CancelOrderCommandHandler commandHandler = new CancelOrderCommandHandler();
 
@@ -94,51 +93,6 @@ class CancelOrderCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Order is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToCancelOrderWithoutCustomer() {
-        try {
-            CancelOrderCommand command = new CancelOrderCommand(order, null, store, deliverer);
-
-            CancelOrderCommandHandler commandHandler = new CancelOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToCancelOrderWithoutStore() {
-        try {
-            CancelOrderCommand command = new CancelOrderCommand(order, customer, null, deliverer);
-
-            CancelOrderCommandHandler commandHandler = new CancelOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToCancelOrderWithoutDeliverer() {
-        try {
-            CancelOrderCommand command = new CancelOrderCommand(order, customer, store, null);
-
-            CancelOrderCommandHandler commandHandler = new CancelOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Deliverer is required", e.getMessage());
         }
     }
 }

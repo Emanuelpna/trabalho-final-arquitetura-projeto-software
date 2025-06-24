@@ -30,8 +30,6 @@ class MarkOrderAsReceivedCommandHandlerTest {
     private Customer customer;
     private Deliverer deliverer;
 
-    private OrderMediator mediator;
-
     @BeforeEach
     void setUp() {
         this.doubleCheese = new Addition("Dobro de Queijo", "O dobro de cheddar no seu lanche", 4.99);
@@ -60,7 +58,7 @@ class MarkOrderAsReceivedCommandHandlerTest {
 
     @Test
     public void markOrderAsReceived() {
-        MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order, customer, store, deliverer);
+        MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order);
 
         MarkOrderAsReceivedCommandHandler handler = new MarkOrderAsReceivedCommandHandler();
 
@@ -74,7 +72,7 @@ class MarkOrderAsReceivedCommandHandlerTest {
         try {
             order.markAsReceived();
 
-            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order, customer, store, deliverer);
+            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order);
 
             MarkOrderAsReceivedCommandHandler commandHandler = new MarkOrderAsReceivedCommandHandler();
 
@@ -89,7 +87,7 @@ class MarkOrderAsReceivedCommandHandlerTest {
     @Test
     void failToMarkOrderAsReceivedWithoutOrder() {
         try {
-            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(null, customer, store, deliverer);
+            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(null);
 
             MarkOrderAsReceivedCommandHandler commandHandler = new MarkOrderAsReceivedCommandHandler();
 
@@ -98,51 +96,6 @@ class MarkOrderAsReceivedCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Order is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsReceivedWithoutCustomer() {
-        try {
-            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order, null, store, deliverer);
-
-            MarkOrderAsReceivedCommandHandler commandHandler = new MarkOrderAsReceivedCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsReceivedWithoutStore() {
-        try {
-            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order, customer, null, deliverer);
-
-            MarkOrderAsReceivedCommandHandler commandHandler = new MarkOrderAsReceivedCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsReceivedWithoutDeliverer() {
-        try {
-            MarkOrderAsReceivedCommand command = new MarkOrderAsReceivedCommand(order, customer, store, null);
-
-            MarkOrderAsReceivedCommandHandler commandHandler = new MarkOrderAsReceivedCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Deliverer is required", e.getMessage());
         }
     }
 }

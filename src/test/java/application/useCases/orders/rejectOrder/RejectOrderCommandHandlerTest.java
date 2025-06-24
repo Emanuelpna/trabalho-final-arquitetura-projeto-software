@@ -29,8 +29,6 @@ class RejectOrderCommandHandlerTest {
     private Customer customer;
     private Deliverer deliverer;
 
-    private OrderMediator mediator;
-
     @BeforeEach
     void setUp() {
         this.doubleCheese = new Addition("Dobro de Queijo", "O dobro de cheddar no seu lanche", 4.99);
@@ -59,7 +57,7 @@ class RejectOrderCommandHandlerTest {
 
     @Test
     public void rejectOrder() {
-        RejectOrderCommand command = new RejectOrderCommand(order, customer, store, deliverer);
+        RejectOrderCommand command = new RejectOrderCommand(order);
 
         RejectOrderCommandHandler handler = new RejectOrderCommandHandler();
 
@@ -73,7 +71,7 @@ class RejectOrderCommandHandlerTest {
         try {
             order.reject();
 
-            RejectOrderCommand command = new RejectOrderCommand(order, customer, store, deliverer);
+            RejectOrderCommand command = new RejectOrderCommand(order);
 
             RejectOrderCommandHandler commandHandler = new RejectOrderCommandHandler();
 
@@ -88,7 +86,7 @@ class RejectOrderCommandHandlerTest {
     @Test
     void failToRejectOrderWithoutOrder() {
         try {
-            RejectOrderCommand command = new RejectOrderCommand(null, customer, store, deliverer);
+            RejectOrderCommand command = new RejectOrderCommand(null);
 
             RejectOrderCommandHandler commandHandler = new RejectOrderCommandHandler();
 
@@ -97,51 +95,6 @@ class RejectOrderCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Order is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToRejectOrderWithoutCustomer() {
-        try {
-            RejectOrderCommand command = new RejectOrderCommand(order, null, store, deliverer);
-
-            RejectOrderCommandHandler commandHandler = new RejectOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToRejectOrderWithoutStore() {
-        try {
-            RejectOrderCommand command = new RejectOrderCommand(order, customer, null, deliverer);
-
-            RejectOrderCommandHandler commandHandler = new RejectOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToRejectOrderWithoutDeliverer() {
-        try {
-            RejectOrderCommand command = new RejectOrderCommand(order, customer, store, null);
-
-            RejectOrderCommandHandler commandHandler = new RejectOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Deliverer is required", e.getMessage());
         }
     }
 }

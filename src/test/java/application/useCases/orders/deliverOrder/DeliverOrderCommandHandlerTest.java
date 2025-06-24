@@ -29,7 +29,6 @@ class DeliverOrderCommandHandlerTest {
     private Customer customer;
     private Deliverer deliverer;
 
-    private OrderMediator mediator;
 
     @BeforeEach
     void setUp() {
@@ -57,7 +56,7 @@ class DeliverOrderCommandHandlerTest {
 
     @Test
     public void deliverOrder() {
-        DeliverOrderCommand command = new DeliverOrderCommand(order, customer, store, deliverer);
+        DeliverOrderCommand command = new DeliverOrderCommand(order, deliverer);
 
         DeliverOrderCommandHandler handler = new DeliverOrderCommandHandler();
 
@@ -71,7 +70,7 @@ class DeliverOrderCommandHandlerTest {
         try {
             order.deliver(deliverer);
 
-            DeliverOrderCommand command = new DeliverOrderCommand(order, customer, store, deliverer);
+            DeliverOrderCommand command = new DeliverOrderCommand(order, deliverer);
 
             DeliverOrderCommandHandler commandHandler = new DeliverOrderCommandHandler();
 
@@ -86,7 +85,7 @@ class DeliverOrderCommandHandlerTest {
     @Test
     void failToDeliverOrderWithoutOrder() {
         try {
-            DeliverOrderCommand command = new DeliverOrderCommand(null, customer, store, deliverer);
+            DeliverOrderCommand command = new DeliverOrderCommand(null, deliverer);
 
             DeliverOrderCommandHandler commandHandler = new DeliverOrderCommandHandler();
 
@@ -99,39 +98,9 @@ class DeliverOrderCommandHandlerTest {
     }
 
     @Test
-    void failToDeliverOrderWithoutCustomer() {
-        try {
-            DeliverOrderCommand command = new DeliverOrderCommand(order, null, store, deliverer);
-
-            DeliverOrderCommandHandler commandHandler = new DeliverOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToDeliverOrderWithoutStore() {
-        try {
-            DeliverOrderCommand command = new DeliverOrderCommand(order, customer, null, deliverer);
-
-            DeliverOrderCommandHandler commandHandler = new DeliverOrderCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
-        }
-    }
-
-    @Test
     void failToDeliverOrderWithoutDeliverer() {
         try {
-            DeliverOrderCommand command = new DeliverOrderCommand(order, customer, store, null);
+            DeliverOrderCommand command = new DeliverOrderCommand(order, null);
 
             DeliverOrderCommandHandler commandHandler = new DeliverOrderCommandHandler();
 

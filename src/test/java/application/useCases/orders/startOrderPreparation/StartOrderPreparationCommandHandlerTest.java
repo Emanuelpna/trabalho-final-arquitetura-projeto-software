@@ -25,8 +25,6 @@ class StartOrderPreparationCommandHandlerTest {
     private Store store;
     private Customer customer;
 
-    private OrderMediator mediator;
-
     @BeforeEach
     void setUp() {
         this.doubleCheese = new Addition("Dobro de Queijo", "O dobro de cheddar no seu lanche", 4.99);
@@ -50,7 +48,7 @@ class StartOrderPreparationCommandHandlerTest {
     void startOrderPreparation() {
         order.placeOrder(customer, store);
 
-        StartOrderPreparationCommand command = new StartOrderPreparationCommand(order, customer, store);
+        StartOrderPreparationCommand command = new StartOrderPreparationCommand(order);
 
         StartOrderPreparationCommandHandler commandHandler = new StartOrderPreparationCommandHandler();
 
@@ -66,7 +64,7 @@ class StartOrderPreparationCommandHandlerTest {
 
             order.startOrderPreparation();
 
-            StartOrderPreparationCommand command = new StartOrderPreparationCommand(order, customer, store);
+            StartOrderPreparationCommand command = new StartOrderPreparationCommand(order);
 
             StartOrderPreparationCommandHandler commandHandler = new StartOrderPreparationCommandHandler();
 
@@ -81,7 +79,7 @@ class StartOrderPreparationCommandHandlerTest {
     @Test
     void failToStartOrderPreparationWithoutOrder() {
         try {
-            StartOrderPreparationCommand command = new StartOrderPreparationCommand(null, customer, store);
+            StartOrderPreparationCommand command = new StartOrderPreparationCommand(null);
 
             StartOrderPreparationCommandHandler commandHandler = new StartOrderPreparationCommandHandler();
 
@@ -90,36 +88,6 @@ class StartOrderPreparationCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Order is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToStartOrderPreparationWithoutCustomer() {
-        try {
-            StartOrderPreparationCommand command = new StartOrderPreparationCommand(order, null, store);
-
-            StartOrderPreparationCommandHandler commandHandler = new StartOrderPreparationCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToStartOrderPreparationWithoutStore() {
-        try {
-            StartOrderPreparationCommand command = new StartOrderPreparationCommand(order, customer, null);
-
-            StartOrderPreparationCommandHandler commandHandler = new StartOrderPreparationCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
         }
     }
 }

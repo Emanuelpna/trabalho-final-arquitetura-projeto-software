@@ -32,14 +32,9 @@ public class PlaceOrderCommandHandler implements CommandHandler<PlaceOrderComman
         List<Notification> notifications = command.getOrder().placeOrder(command.getCustomer(), command.getStore());
 
         for (var notification : notifications) {
-            NotificationSender.getInstance().addNotification(notification, List.of(command.getCustomer(), command.getStore()));
+            NotificationSender.getInstance().addNotification(notification);
         }
 
         return command.getOrder();
-    }
-
-    @Override
-    public void cancel() {
-
     }
 }

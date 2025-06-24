@@ -29,8 +29,6 @@ class MarkOrderAsNotAnsweredCommandHandlerTest {
     private Customer customer;
     private Deliverer deliverer;
 
-    private OrderMediator mediator;
-
     @BeforeEach
     void setUp() {
         this.doubleCheese = new Addition("Dobro de Queijo", "O dobro de cheddar no seu lanche", 4.99);
@@ -59,7 +57,7 @@ class MarkOrderAsNotAnsweredCommandHandlerTest {
 
     @Test
     public void markOrderAsNotAnswered() {
-        MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order, customer, store, deliverer);
+        MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order);
 
         MarkOrderAsNotAnsweredCommandHandler handler = new MarkOrderAsNotAnsweredCommandHandler();
 
@@ -73,7 +71,7 @@ class MarkOrderAsNotAnsweredCommandHandlerTest {
         try {
             order.markAsNotAnswered();
 
-            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order, customer, store, deliverer);
+            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order);
 
             MarkOrderAsNotAnsweredCommandHandler commandHandler = new MarkOrderAsNotAnsweredCommandHandler();
 
@@ -88,7 +86,7 @@ class MarkOrderAsNotAnsweredCommandHandlerTest {
     @Test
     void failToMarkOrderAsNotAnsweredWithoutOrder() {
         try {
-            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(null, customer, store, deliverer);
+            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(null);
 
             MarkOrderAsNotAnsweredCommandHandler commandHandler = new MarkOrderAsNotAnsweredCommandHandler();
 
@@ -97,51 +95,6 @@ class MarkOrderAsNotAnsweredCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Order is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsNotAnsweredWithoutCustomer() {
-        try {
-            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order, null, store, deliverer);
-
-            MarkOrderAsNotAnsweredCommandHandler commandHandler = new MarkOrderAsNotAnsweredCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsNotAnsweredWithoutStore() {
-        try {
-            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order, customer, null, deliverer);
-
-            MarkOrderAsNotAnsweredCommandHandler commandHandler = new MarkOrderAsNotAnsweredCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsNotAnsweredWithoutDeliverer() {
-        try {
-            MarkOrderAsNotAnsweredCommand command = new MarkOrderAsNotAnsweredCommand(order, customer, store, null);
-
-            MarkOrderAsNotAnsweredCommandHandler commandHandler = new MarkOrderAsNotAnsweredCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Deliverer is required", e.getMessage());
         }
     }
 }

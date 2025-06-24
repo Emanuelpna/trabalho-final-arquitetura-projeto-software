@@ -38,7 +38,7 @@ class NotificationSenderTest {
 
     @Test
     void testNotificationSenderStoringNotificationToBeSentToUser() {
-        NotificationSender.getInstance().addNotification(notificationToCustomer, List.of(customer));
+        NotificationSender.getInstance().addNotification(notificationToCustomer);
 
         assertTrue(
                 NotificationSender.getInstance()
@@ -50,18 +50,18 @@ class NotificationSenderTest {
 
     @Test
     void testNotificationSenderSendingNotificationToUser() {
-        NotificationSender.getInstance().addNotification(notificationToCustomer, List.of(customer));
+        NotificationSender.getInstance().addNotification(notificationToCustomer);
 
-        NotificationSender.getInstance().dispatchNotifications();
+        NotificationSender.getInstance().dispatchNotifications(List.of(store, customer, deliverer));
 
         assertEquals("Your order was approved by the store and started the preparation.", customer.getLastNotification());
     }
 
     @Test
     void testNotificationSenderMarkingNotificationAsSent() {
-        NotificationSender.getInstance().addNotification(notificationToCustomer, List.of(customer));
+        NotificationSender.getInstance().addNotification(notificationToCustomer);
 
-        NotificationSender.getInstance().dispatchNotifications();
+        NotificationSender.getInstance().dispatchNotifications(List.of(store, customer, deliverer));
 
         Optional<NotificationToBeSent> notificationToBeSentToUser = NotificationSender.getInstance()
                 .getNotificationsToBeSent()
@@ -80,33 +80,33 @@ class NotificationSenderTest {
 
     @Test
     void testNotificationFromOtherUserRolesNotBeingSentToCustomer() {
-        NotificationSender.getInstance().addNotification(notificationToStore, List.of(customer, deliverer, store));
-        NotificationSender.getInstance().addNotification(notificationToCustomer, List.of(customer, deliverer, store));
-        NotificationSender.getInstance().addNotification(notificationToDeliverer, List.of(customer, deliverer, store));
+        NotificationSender.getInstance().addNotification(notificationToStore);
+        NotificationSender.getInstance().addNotification(notificationToCustomer);
+        NotificationSender.getInstance().addNotification(notificationToDeliverer);
 
-        NotificationSender.getInstance().dispatchNotifications();
+        NotificationSender.getInstance().dispatchNotifications(List.of(store, customer, deliverer));
 
         assertEquals(1, customer.getNotifications().size());
     }
 
     @Test
     void testNotificationFromOtherUserRolesNotBeingSentToStore() {
-        NotificationSender.getInstance().addNotification(notificationToStore, List.of(customer, deliverer, store));
-        NotificationSender.getInstance().addNotification(notificationToCustomer, List.of(customer, deliverer, store));
-        NotificationSender.getInstance().addNotification(notificationToDeliverer, List.of(customer, deliverer, store));
+        NotificationSender.getInstance().addNotification(notificationToStore);
+        NotificationSender.getInstance().addNotification(notificationToCustomer);
+        NotificationSender.getInstance().addNotification(notificationToDeliverer);
 
-        NotificationSender.getInstance().dispatchNotifications();
+        NotificationSender.getInstance().dispatchNotifications(List.of(store, customer, deliverer));
 
         assertEquals(1, store.getNotifications().size());
     }
 
     @Test
     void testNotificationFromOtherUserRolesNotBeingSentToDeliverer() {
-        NotificationSender.getInstance().addNotification(notificationToStore, List.of(customer, deliverer, store));
-        NotificationSender.getInstance().addNotification(notificationToCustomer, List.of(customer, deliverer, store));
-        NotificationSender.getInstance().addNotification(notificationToDeliverer, List.of(customer, deliverer, store));
+        NotificationSender.getInstance().addNotification(notificationToStore);
+        NotificationSender.getInstance().addNotification(notificationToCustomer);
+        NotificationSender.getInstance().addNotification(notificationToDeliverer);
 
-        NotificationSender.getInstance().dispatchNotifications();
+        NotificationSender.getInstance().dispatchNotifications(List.of(store, customer, deliverer));
 
         assertEquals(1, deliverer.getNotifications().size());
     }

@@ -29,8 +29,6 @@ class MarkOrderAsArrivedCommandHandlerTest {
     private Customer customer;
     private Deliverer deliverer;
 
-    private OrderMediator mediator;
-
     @BeforeEach
     void setUp() {
         this.doubleCheese = new Addition("Dobro de Queijo", "O dobro de cheddar no seu lanche", 4.99);
@@ -58,7 +56,7 @@ class MarkOrderAsArrivedCommandHandlerTest {
 
     @Test
     public void markOrderAsArrived() {
-        MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order, customer, store, deliverer);
+        MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order);
 
         MarkOrderAsArrivedCommandHandler handler = new MarkOrderAsArrivedCommandHandler();
 
@@ -72,7 +70,7 @@ class MarkOrderAsArrivedCommandHandlerTest {
         try {
             order.markAsArrived();
 
-            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order, customer, store, deliverer);
+            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order);
 
             MarkOrderAsArrivedCommandHandler commandHandler = new MarkOrderAsArrivedCommandHandler();
 
@@ -87,7 +85,7 @@ class MarkOrderAsArrivedCommandHandlerTest {
     @Test
     void failToMarkOrderAsArrivedWithoutOrder() {
         try {
-            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(null, customer, store, deliverer);
+            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(null);
 
             MarkOrderAsArrivedCommandHandler commandHandler = new MarkOrderAsArrivedCommandHandler();
 
@@ -96,51 +94,6 @@ class MarkOrderAsArrivedCommandHandlerTest {
             fail();
         } catch (IllegalStateException e) {
             assertEquals("Order is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsArrivedWithoutCustomer() {
-        try {
-            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order, null, store, deliverer);
-
-            MarkOrderAsArrivedCommandHandler commandHandler = new MarkOrderAsArrivedCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Customer is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsArrivedWithoutStore() {
-        try {
-            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order, customer, null, deliverer);
-
-            MarkOrderAsArrivedCommandHandler commandHandler = new MarkOrderAsArrivedCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Store is required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToMarkOrderAsArrivedWithoutDeliverer() {
-        try {
-            MarkOrderAsArrivedCommand command = new MarkOrderAsArrivedCommand(order, customer, store, null);
-
-            MarkOrderAsArrivedCommandHandler commandHandler = new MarkOrderAsArrivedCommandHandler();
-
-            commandHandler.handle(command);
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Deliverer is required", e.getMessage());
         }
     }
 }
