@@ -1,19 +1,18 @@
 package domain.orders.builders;
 
-import domain.customers.entities.Customer;
-import domain.orders.valueObjects.Address;
 import domain.orders.abstractions.OrderBuilder;
 import domain.orders.abstractions.OrderItemBuilder;
 import domain.orders.entities.Order;
 import domain.orders.entities.OrderItem;
 import domain.orders.entities.RestaurantOrder;
 import domain.orders.states.PendingOrderState;
+import domain.orders.valueObjects.Address;
 import domain.stores.abstractions.StoreType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantOrderBuilder implements OrderBuilder {
+public class SupermarketOrderBuilder implements OrderBuilder {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private Address shippingAddress;
@@ -38,8 +37,8 @@ public class RestaurantOrderBuilder implements OrderBuilder {
 
     @Override
     public OrderBuilder addOrderItem(OrderItem orderItem) {
-        if (!orderItem.getProduct().getStoreType().equals(StoreType.RESTAURANT)) {
-            throw new IllegalStateException("Order items must be of type RESTAURANT");
+        if (!orderItem.getProduct().getStoreType().equals(StoreType.SUPERMARKET)) {
+            throw new IllegalStateException("Order items must be of type SUPERMARKET");
         }
 
         this.orderItems.add(orderItem);

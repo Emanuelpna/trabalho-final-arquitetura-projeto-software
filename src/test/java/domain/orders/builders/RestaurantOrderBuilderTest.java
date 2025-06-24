@@ -14,9 +14,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-class RestaurantOrderItemBuilderTest {
+class RestaurantOrderBuilderTest {
     private Addition doubleCheese;
     private Product xBurguer;
 
@@ -41,60 +42,41 @@ class RestaurantOrderItemBuilderTest {
                 .addShippingAddress(new Address("Rua Aquela Lá", "Juiz de Fora", "MG", "Brasil"))
                 .build();
 
-        List<OrderItem> orderItems = order.getOrderItems();
-
-        assertEquals(1, orderItems.size());
+        assertEquals("Pending", order.getOrderState().getStateName());
     }
 
     @Test
-    void failToCreateOrderItemWithoutProduct() {
+    void failToCreateOrderItemWithoutAddress() {
         try {
             OrderBuilder restaurantOrderBuilder = OrderBuilderFactory.getOrder("RestaurantOrderBuilder");
             OrderItemBuilder restauranteOrderItemBuilder = new RestaurantOrderItemBuilder(restaurantOrderBuilder);
 
-            restauranteOrderItemBuilder
+            OrderBuilder orderBuilder = restauranteOrderItemBuilder
+                    .chooseProduct(xBurguer)
                     .withQuantity(1)
                     .addAddition(doubleCheese)
                     .build();
 
+            orderBuilder.build();
+
             fail();
         } catch (IllegalStateException e) {
-            assertEquals("Product and quantity are required", e.getMessage());
+            assertEquals("Shipping address not set", e.getMessage());
         }
     }
 
     @Test
-    void failToCreateOrderItemWithoutQuantity() {
+    void failToCreateOrderItemWithoutOrderItems() {
         try {
             OrderBuilder restaurantOrderBuilder = OrderBuilderFactory.getOrder("RestaurantOrderBuilder");
-            OrderItemBuilder restauranteOrderItemBuilder = new RestaurantOrderItemBuilder(restaurantOrderBuilder);
 
-            restauranteOrderItemBuilder
-                    .chooseProduct(xBurguer)
-                    .addAddition(doubleCheese)
+            restaurantOrderBuilder
+                    .addShippingAddress(new Address("Rua Aquela Lá", "Juiz de Fora", "MG", "Brasil"))
                     .build();
 
             fail();
         } catch (IllegalStateException e) {
-            assertEquals("Product and quantity are required", e.getMessage());
-        }
-    }
-
-    @Test
-    void failToCreateOrderItemWithProductFromOtherStoreType() {
-        try {
-            OrderBuilder restaurantOrderBuilder = OrderBuilderFactory.getOrder("RestaurantOrderBuilder");
-            OrderItemBuilder restauranteOrderItemBuilder = new RestaurantOrderItemBuilder(restaurantOrderBuilder);
-
-            Product shampoo = new Product("Shampoo", 25.99, StoreType.DRUGSTORE, List.of());
-
-            restauranteOrderItemBuilder
-                    .chooseProduct(shampoo)
-                    .build();
-
-            fail();
-        } catch (IllegalStateException e) {
-            assertEquals("Order items must be of type RESTAURANT", e.getMessage());
+            assertEquals("Order items cannot be empty", e.getMessage());
         }
     }
 }

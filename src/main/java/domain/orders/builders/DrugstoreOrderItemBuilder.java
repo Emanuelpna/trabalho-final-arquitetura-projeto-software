@@ -10,14 +10,14 @@ import domain.stores.abstractions.StoreType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestaurantOrderItemBuilder implements OrderItemBuilder {
+public class DrugstoreOrderItemBuilder implements OrderItemBuilder {
     private OrderBuilder orderBuilder;
     private Product product;
     private int quantity;
     private List<Addition> selectedAdditions = new ArrayList<>();
 
 
-    public RestaurantOrderItemBuilder(OrderBuilder orderBuilder) {
+    public DrugstoreOrderItemBuilder(OrderBuilder orderBuilder) {
         this.orderBuilder = orderBuilder;
     }
 
@@ -40,8 +40,8 @@ public class RestaurantOrderItemBuilder implements OrderItemBuilder {
 
     @Override
     public OrderItemBuilder chooseProduct(Product product) {
-        if (!product.getStoreType().equals(StoreType.RESTAURANT)) {
-            throw new IllegalStateException("Order items must be of type RESTAURANT");
+        if (!product.getStoreType().equals(StoreType.DRUGSTORE)) {
+            throw new IllegalStateException("Order items must be of type DRUGSTORE");
         }
 
         this.product = product;
