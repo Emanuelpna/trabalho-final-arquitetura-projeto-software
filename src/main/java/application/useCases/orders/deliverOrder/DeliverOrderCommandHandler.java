@@ -1,7 +1,7 @@
 package application.useCases.orders.deliverOrder;
 
 import domain.orders.entities.Order;
-import domain.orders.states.PreparingOrderState;
+import domain.orders.states.DeliveringOrderState;
 import domain.shared.abstractions.CommandHandler;
 import domain.shared.abstractions.Notification;
 import infra.notifications.NotificationSender;
@@ -27,8 +27,8 @@ public class DeliverOrderCommandHandler implements CommandHandler<DeliverOrderCo
             throw new IllegalStateException("Deliverer is required");
         }
 
-        if (command.getOrder().getOrderState() == PreparingOrderState.getInstance()) {
-            throw new IllegalStateException("Order already in preparation");
+        if (command.getOrder().getOrderState() == DeliveringOrderState.getInstance()) {
+            throw new IllegalStateException("Order already being delivered");
         }
 
         List<Notification> notifications = command.getOrder().deliver(command.getDeliverer());
